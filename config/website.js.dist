@@ -1,0 +1,22 @@
+module.exports = {
+    // Server
+    hostname: '127.0.0.1',
+    port: 80,
+    login: 'foo',
+    password: 'bar',
+
+    // The path of the snapshots
+    snapshotsPath: '/home/ftp/camera/snap',
+
+    // Keep the last 100 snapshots
+    limit: 100,
+
+    // Presets
+    presets: [
+        'Cuisine',
+        'Escalier',
+        'Tele', 
+        'Veranda',
+        'Salon'
+    ]
+};

@@ -1,0 +1,71 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: black;
+}
+
+#screen {
+    position: absolute;
+}
+
+#directions {
+    display: none;
+}
+    #control-up {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 30px;
+        -webkit-transform: translate(-15px, 0);
+        -moz-transform: translate(-15px, 0);
+        transform: translate(-15px, 0);
+    }
+    #control-down {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 30px;
+        -webkit-transform: translate(-15px, 0);
+        -moz-transform: translate(-15px, 0);
+        transform: translate(-15px, 0);
+    }
+    #control-left {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 30px;
+        -webkit-transform: translate(0, -15px);
+        -moz-transform: translate(0, -15px);
+        transform: translate(0, -15px);
+    }
+    #control-right {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 30px;
+        -webkit-transform: translate(0, -15px);
+        -moz-transform: translate(0, -15px);
+        transform: translate(0, -15px);
+    }
+
+
+#presets {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    li {
+        width: auto;
+    }
+}
+
+#type {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+
+    li {
+        width: auto;
+    }
+}
+

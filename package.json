@@ -1,0 +1,27 @@
+{
+    "name"          : "camera-foscam-fi9821w-v2-controller",
+    "description"   : "A controller for the IP camera Foscam FI9821W V2",
+    "version"       : "0.1.0",
+    "author"        : "neolao <contact@neolao.com>",
+    "repository"    : "https://github.com/neolao/camera-foscam-fi9821w-v2-controller.git",
+    "engines"       : 
+    {
+        "node": ">= 0.11.9"
+    },
+    "dependencies"  : 
+    {
+        "solfegejs"         : "*",
+        "solfegejs-cli"     : "*",
+        "solfegejs-server"  : "*",
+        "solfegejs-server-compression"  : "*",
+        "solfegejs-server-static"  : "*",
+        "solfegejs-server-router": "*",
+        "solfegejs-sass"    : "*",
+        "solfegejs-assets"  : "*",
+        "solfegejs-swig"    : "*",
+        "async"             : "0.6.2"
+    },
+    "devDependencies":
+    {
+    }
+}
