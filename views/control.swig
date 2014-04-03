@@ -24,11 +24,9 @@
                         </ul>
                     </div>
 
-                    <div id="type" data-role="navbar">
-                        <ul>
-                            <li><a href="#" data-type="0">HD</a></li>
-                            <li><a href="#" data-type="3">LD</a></li>
-                        </ul>
+                    <div id="config" data-role="navbar">
+                        <label><input id="type" type="checkbox"/> HD</label>
+                        <label><input id="detection" type="checkbox"/> Detection</label>
                     </div>
 
                     <div id="directions">

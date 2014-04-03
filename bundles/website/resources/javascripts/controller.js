@@ -25,35 +25,30 @@ $(document).ready(function()
         $('#snapshot').attr('src', '/lastSnapshot.jpg/' + new Date().getTime());
     };
 
-    $('#control-up').on('vmousedown', function(event) {
-        $.get('/action/up', function() {
+    $('#control-up').on('click', function(event) {
+        $.get('/action/up-and-stop', function() {
             updateSnapshot();
         });
     });
 
-    $('#control-right').on('vmousedown', function(event) {
-        $.get('/action/right', function() {
+    $('#control-right').on('click', function(event) {
+        $.get('/action/right-and-stop', function() {
             updateSnapshot();
         });
     });
 
-    $('#control-down').on('vmousedown', function(event) {
-        $.get('/action/down', function() {
+    $('#control-down').on('click', function(event) {
+        $.get('/action/down-and-stop', function() {
             updateSnapshot();
         });
     });
 
-    $('#control-left').on('vmousedown', function(event) {
-        $.get('/action/left', function() {
+    $('#control-left').on('click', function(event) {
+        $.get('/action/left-and-stop', function() {
             updateSnapshot();
         });
     });
 
-    $('#control-up, #control-right, #control-down, #control-left').on('vmouseup', function(event) {
-        $.get('/action/stop', function() {
-            updateSnapshot();
-        });
-    });
 
     $('#presets a').on('click', function(event) {
         var link = $(event.target);
@@ -64,18 +59,46 @@ $(document).ready(function()
         });
     });
 
-    $('#type a').on('click', function(event) {
-        var link = $(event.target);
-        var type = link.data('type');
+    $('#type').change(function(event) {
+        var input = $(event.target);
+        var checked = input.is(':checked');
 
         $.get('/action/type/' + type, function() {
             updateSnapshot();
         });
 
-        if (type == '0') {
+        if (checked) {
             $.get('/action/quality/2');
         } else {
             $.get('/action/quality/0');
+        }
+    });
+
+    $('#detection').change(function(event) {
+        var input = $(event.target);
+        var checked = input.is(':checked');
+
+        if (checked) {
+            $.get('/action/detection/1');
+        } else {
+            $.get('/action/detection/0');
+        }
+    });
+
+
+    // Get configuration
+    $.get('/config/detection', function(result) {
+        if (result === '1') {
+            $('#detection').attr('checked', true).checkboxradio('refresh');
+        } else {
+            $('#detection').attr('checked', false).checkboxradio('refresh');
+        }
+    });
+    $.get('/config/videoType', function(result) {
+        if (result === '0') {
+            $('#type').attr('checked', true).checkboxradio('refresh');
+        } else {
+            $('#type').attr('checked', false).checkboxradio('refresh');
         }
     });
 

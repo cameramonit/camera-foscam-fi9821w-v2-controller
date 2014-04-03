@@ -11,6 +11,9 @@ module.exports = {
     // Keep the last 100 snapshots
     limit: 100,
 
+    // The archives directory
+    archivePath: '/home/archives',
+
     // Presets
     presets: [
         'Cuisine',

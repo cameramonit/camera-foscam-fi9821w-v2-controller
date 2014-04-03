@@ -20,6 +20,7 @@
         "solfegejs-assets"  : "*",
         "solfegejs-swig"    : "*",
         "async"             : "0.6.2"
+        "xml2js"            : "0.4.2"
     },
     "devDependencies":
     {

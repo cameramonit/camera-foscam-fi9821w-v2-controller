@@ -36,6 +36,13 @@ module.exports = [
         controller: '@website.controllers.Home',
         action: 'action'
     },
+    {
+        id: 'config',
+        url: '/config/:name',
+        controller: '@website.controllers.Home',
+        action: 'config'
+    },
+
 
 
 

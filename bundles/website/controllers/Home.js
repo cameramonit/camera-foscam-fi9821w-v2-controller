@@ -61,6 +61,22 @@ proto.lastSnapshot = function*(request, response)
 };
 
 /**
+ * Get configuration
+ *
+ * @param   {solfege.bundle.server.Request}     request     The request
+ * @param   {solfege.bundle.server.Response}    response    The response
+ */
+proto.config = function*(request, response)
+{
+    var name = request.getParameter('name');
+
+    var value = yield this.getConfiguration(name);
+
+    response.statusCode = 200;
+    response.body = value;
+};
+
+/**
  * Execute an action
  *
  * @param   {solfege.bundle.server.Request}     request     The request
@@ -105,6 +121,18 @@ proto.action = function*(request, response)
         case 'stop':
             commands = ['ptzStopRun'];
             break;
+        case 'up-and-stop':
+            commands = ['ptzMoveUp', 'ptzStopRun'];
+            break;
+        case 'down-and-stop':
+            commands = ['ptzMoveDown', 'ptzStopRun'];
+            break;
+        case 'left-and-stop':
+            commands = ['ptzMoveLeft', 'ptzStopRun'];
+            break;
+        case 'right-and-stop':
+            commands = ['ptzMoveRight', 'ptzStopRun'];
+            break;
         case 'brightness':
             commands = ['setBrightness&brightness=' + value];
             break;
@@ -144,6 +172,9 @@ proto.action = function*(request, response)
             // quality 2: high
             commands = ['setSnapConfig&saveLocation=2&snapQuality=' + value];
             break;
+        case 'detection':
+            commands = ['setMotionDetectConfig&snapInterval=1&sensitivity=1&linkage=10&triggerInterval=0&schedule0=281474976710655&schedule1=281474976710655&schedule2=281474976710655&schedule3=281474976710655&schedule4=281474976710655&schedule5=281474976710655&schedule6=281474976710655&area0=0&area1=0&area2=0&area3=0&area4=0&area5=0&area6=0&area7=0&area8=0&area9=0&isEnable=' + value];
+            break;
     }
 
     var commandIndex = 0;
@@ -164,7 +195,7 @@ proto.action = function*(request, response)
                 setTimeout(function() {
                     commandIndex++;
                     next();
-                }, 1000);
+                }, 3000);
             });
             httpRequest.end();
         },
@@ -176,7 +207,65 @@ proto.action = function*(request, response)
     response.body = 'OK';
 };
 
+/**
+ * Get a configuration value (thunks)
+ *
+ * @param   {String}    name    The configuration name
+ * @return  {String}            The configuration value
+ */
+proto.getConfiguration = function(name)
+{
+    var command;
+    var propertyName;
 
+    switch (name) {
+        default:
+            return function(done) {
+                done(null, 'Unknown');
+            };
+        case 'detection':
+            command = 'getMotionDetectConfig';
+            propertyName = 'isEnable';
+            break;
+        case 'videoType':
+            command = 'getMainVideoStreamType';
+            propertyName = 'streamType';
+            break;
+    }
+
+    return function(done) {
+        var http = require('http');
+        var services = solfege.kernel.Services;
+        var application = services.get('application');
+        var website = application.getBundle('website');
+        var presets = website.configuration.presets;
+        var hostname = website.configuration.hostname;
+        var port = website.configuration.port;
+        var login = website.configuration.login;
+        var password = website.configuration.password;
+
+        var httpRequest = http.request({
+            hostname: hostname,
+            port: port,
+            path: '/cgi-bin/CGIProxy.fcgi?usr=' + login + '&pwd=' + password + '&cmd=' + command,
+            method: 'GET'
+        }, function(httpResponse) {
+            httpResponse.on('data', function(chunk) {
+                var xml2js = require('xml2js');
+                var xml = chunk.toString();
+
+                xml2js.parseString(xml, function(error, result) {
+                    var cgiResult = result.CGI_Result;
+                    var value = cgiResult[propertyName];
+
+                    done(null, value.toString());
+                });
+
+            });
+        });
+        httpRequest.end();
+    };
+};
 
 
 
