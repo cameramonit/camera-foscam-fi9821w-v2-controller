@@ -63,14 +63,18 @@ $(document).ready(function()
         var input = $(event.target);
         var checked = input.is(':checked');
 
-        $.get('/action/type/' + type, function() {
-            updateSnapshot();
-        });
-
         if (checked) {
-            $.get('/action/quality/2');
+            $.get('/action/type/0', function() {
+                $.get('/action/quality/2', function() {
+                    updateSnapshot();
+                });
+            });
         } else {
-            $.get('/action/quality/0');
+            $.get('/action/type/3', function() {
+                $.get('/action/quality/0', function() {
+                    updateSnapshot();
+                });
+            });
         }
     });
 

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <title>Camera 1</title>
 
@@ -13,7 +13,7 @@
     <body>
         <article data-role="page" data-theme="b">
             <div data-role="content">
-                <img src="/lastSnapshot.jpg" alt="" width="100%"/>
+                <a href="/"><img src="/lastSnapshot.jpg/{{ random }}" alt="" width="100%"/></a>
             </div>
         </article>
 

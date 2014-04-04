@@ -10,24 +10,25 @@ var Home = solfege.util.Class.create(function()
 var proto = Home.prototype;
 
 /**
- * Main action
+ * The main view
  *
  * @param   {solfege.bundle.server.Request}     request     The request
  * @param   {solfege.bundle.server.Response}    response    The response
  */
 proto.index = function*(request, response)
 {
+    response.parameters.random = new Date().getTime();
     response.statusCode = 200;
     yield response.render('index.swig');
 };
 
 /**
- * The snapshot controller
+ * The admin view
  *
  * @param   {solfege.bundle.server.Request}     request     The request
  * @param   {solfege.bundle.server.Response}    response    The response
  */
-proto.control = function*(request, response)
+proto.admin = function*(request, response)
 {
     var services = solfege.kernel.Services;
     var application = services.get('application');
@@ -36,7 +37,7 @@ proto.control = function*(request, response)
 
     response.parameters.presets = presets;
     response.statusCode = 200;
-    yield response.render('control.swig');
+    yield response.render('admin.swig');
 };
 
 

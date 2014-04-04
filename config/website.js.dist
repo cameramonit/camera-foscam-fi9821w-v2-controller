@@ -1,4 +1,8 @@
 module.exports = {
+    // Title
+    title: 'Camera 1',
+
+    /
     // Server
     hostname: '127.0.0.1',
     port: 80,
@@ -8,8 +12,8 @@ module.exports = {
     // The path of the snapshots
     snapshotsPath: '/home/ftp/camera/snap',
 
-    // Keep the last 100 snapshots
-    limit: 100,
+    // Keep the last 10 images in the snapshots directory
+    limit: 10,
 
     // The archives directory
     archivePath: '/home/archives',

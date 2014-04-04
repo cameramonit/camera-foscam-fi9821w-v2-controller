@@ -1,16 +1,36 @@
 module.exports = [
+    // The main view
+    // It is a read only view
     {
         id: 'home',
         url: '/',
         controller: '@website.controllers.Home',
         action: 'index'
     },
+
+    // The admin view
     {
-        id: 'control',
-        url: '/control',
+        id: 'admin',
+        url: '/admin',
         controller: '@website.controllers.Home',
-        action: 'control'
+        action: 'admin'
     },
+
+    // The archives
+    {
+        id: 'archives',
+        url: '/archives',
+        controller: '@website.controllers.Archive',
+        action: 'index'
+    },
+    {
+        id: 'archiveDay',
+        url: '/archives/:date',
+        controller: '@website.controllers.Archive',
+        action: 'day'
+    },
+
+
 
     {
         id: 'lastSnapshot',
