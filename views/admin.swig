@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
-        <title>Camera 1</title>
+        <title>{{ title }}</title>
 
         {% for url in stylesheet('default') %}
             <link rel="stylesheet" type="text/css" href="{{ url }}"/>
@@ -16,17 +16,19 @@
                 <div id="screen">
                     <img id="snapshot" src="/lastSnapshot.jpg" alt="" width="100%" height="100%"/>
 
-                    <div id="presets" data-role="navbar">
-                        <ul>
+                    <div id="presets" class="ui-field-contain">
+                        <select name="select-native-1" id="select-native-1">
+                            <option>Presets ...</option>
                             {% for preset in presets %}
-                            <li><a href="#" data-preset="{{ preset }}">{{ preset }}</a></li>
+                                <option value="{{ preset }}">{{ preset }}</option>
                             {% endfor %}
-                        </ul>
+                        </select>
                     </div>
 
                     <div id="config" data-role="navbar">
                         <label><input id="type" type="checkbox"/> HD</label>
                         <label><input id="detection" type="checkbox"/> Detection</label>
+                        <label><input id="snapshots" type="checkbox"/> Snapshots</label>
                     </div>
 
                     <div id="directions">

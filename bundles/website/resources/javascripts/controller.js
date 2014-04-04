@@ -50,9 +50,9 @@ $(document).ready(function()
     });
 
 
-    $('#presets a').on('click', function(event) {
-        var link = $(event.target);
-        var preset = link.data('preset');
+    $('#presets').change(function(event) {
+        var input = $(event.target);
+        var preset = input.val();
 
         $.get('/action/goto/' + preset, function() {
             updateSnapshot();
@@ -89,6 +89,18 @@ $(document).ready(function()
         }
     });
 
+    $('#snapshots').change(function(event) {
+        var input = $(event.target);
+        var checked = input.is(':checked');
+
+        if (checked) {
+            $.get('/action/snapshots/1');
+        } else {
+            $.get('/action/snapshots/0');
+        }
+    });
+
+
 
     // Get configuration
     $.get('/config/detection', function(result) {
@@ -105,6 +117,14 @@ $(document).ready(function()
             $('#type').attr('checked', false).checkboxradio('refresh');
         }
     });
+    $.get('/config/snapshots', function(result) {
+        if (result === '1') {
+            $('#snapshots').attr('checked', true).checkboxradio('refresh');
+        } else {
+            $('#snapshots').attr('checked', false).checkboxradio('refresh');
+        }
+    });
+
 
 
     // Update the snapshot every 5 seconds

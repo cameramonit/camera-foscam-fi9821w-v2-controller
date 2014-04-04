@@ -5,9 +5,22 @@ var solfege = require('solfegejs');
  */
 var Home = solfege.util.Class.create(function()
 {
+    var services = solfege.kernel.Services;
+    var application = services.get('application');
+    var website = application.getBundle('website');
+
+    this.configuration = website.configuration;
 
 }, 'website.controllers.Home');
 var proto = Home.prototype;
+
+/**
+ * The website configuration
+ *
+ * @type {Object}
+ */
+proto.configuration;
+
 
 /**
  * The main view
@@ -17,6 +30,9 @@ var proto = Home.prototype;
  */
 proto.index = function*(request, response)
 {
+    var title = this.configuration.title;
+
+    response.parameters.title = title;
     response.parameters.random = new Date().getTime();
     response.statusCode = 200;
     yield response.render('index.swig');
@@ -30,11 +46,10 @@ proto.index = function*(request, response)
  */
 proto.admin = function*(request, response)
 {
-    var services = solfege.kernel.Services;
-    var application = services.get('application');
-    var website = application.getBundle('website');
-    var presets = website.configuration.presets;
+    var title = this.configuration.title;
+    var presets = this.configuration.presets;
 
+    response.parameters.title = title;
     response.parameters.presets = presets;
     response.statusCode = 200;
     yield response.render('admin.swig');
@@ -50,10 +65,9 @@ proto.admin = function*(request, response)
 proto.lastSnapshot = function*(request, response)
 {
     var fs = require('fs');
-    var services = solfege.kernel.Services;
     var FileSystemUtil = require('../utils/FileSystemUtil');
 
-    var directory = services.get('snapshotsPath');
+    var directory = this.configuration.snapshotsPath;
     var lastFileName = yield FileSystemUtil.getLastFile(directory);
     var lastSnapshotPath = directory + '/' + lastFileName;
 
@@ -176,6 +190,9 @@ proto.action = function*(request, response)
         case 'detection':
             commands = ['setMotionDetectConfig&snapInterval=1&sensitivity=1&linkage=10&triggerInterval=0&schedule0=281474976710655&schedule1=281474976710655&schedule2=281474976710655&schedule3=281474976710655&schedule4=281474976710655&schedule5=281474976710655&schedule6=281474976710655&area0=0&area1=0&area2=0&area3=0&area4=0&area5=0&area6=0&area7=0&area8=0&area9=0&isEnable=' + value];
             break;
+        case 'snapshots':
+            commands = ['setScheduleSnapConfig&snapInterval=1&schedule0=281474976710655&schedule1=281474976710655&schedule2=281474976710655&schedule3=281474976710655&schedule4=281474976710655&schedule5=281474976710655&schedule6=281474976710655&isEnable=' + value];
+            break;
     }
 
     var commandIndex = 0;
@@ -231,6 +248,10 @@ proto.getConfiguration = function(name)
         case 'videoType':
             command = 'getMainVideoStreamType';
             propertyName = 'streamType';
+            break;
+        case 'snapshots':
+            command = 'getScheduleSnapConfig';
+            propertyName = 'isEnable';
             break;
     }
 

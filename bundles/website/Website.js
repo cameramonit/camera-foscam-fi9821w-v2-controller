@@ -83,7 +83,6 @@ proto.onApplicationStart = function*()
 
     // @todo The controller must be able to access to the application
     services.register('application', this.application);
-    services.register('snapshotsPath', directory);
 
     // Remove old files
     var removeInProgress = false;
