@@ -47,7 +47,9 @@ proto.index = function*(request, response)
 proto.admin = function*(request, response)
 {
     var title = this.configuration.title;
-    var presets = this.configuration.presets;
+    var presets = yield this.getConfiguration('presets');
+
+    presets = JSON.parse(presets);
 
     response.parameters.title = title;
     response.parameters.presets = presets;
@@ -253,6 +255,10 @@ proto.getConfiguration = function(name)
             command = 'getScheduleSnapConfig';
             propertyName = 'isEnable';
             break;
+        case 'presets':
+            command = 'getPTZPresetPointList';
+            propertyName = ['point4', 'point5', 'point6', 'point7', 'point8', 'point9', 'point10', 'point11', 'point12', 'point13', 'point14', 'point15'];
+            break;
     }
 
     return function(done) {
@@ -260,7 +266,6 @@ proto.getConfiguration = function(name)
         var services = solfege.kernel.Services;
         var application = services.get('application');
         var website = application.getBundle('website');
-        var presets = website.configuration.presets;
         var hostname = website.configuration.hostname;
         var port = website.configuration.port;
         var login = website.configuration.login;
@@ -273,14 +278,35 @@ proto.getConfiguration = function(name)
             method: 'GET'
         }, function(httpResponse) {
             httpResponse.on('data', function(chunk) {
+                var util = require('util');
                 var xml2js = require('xml2js');
                 var xml = chunk.toString();
 
                 xml2js.parseString(xml, function(error, result) {
                     var cgiResult = result.CGI_Result;
-                    var value = cgiResult[propertyName];
 
-                    done(null, value.toString());
+                    // One property
+                    if (typeof propertyName === 'string') {
+                        var value = cgiResult[propertyName];
+                        done(null, value.toString());
+                        return;
+                    }
+
+                    // Several properties
+                    if (util.isArray(propertyName)) {
+                        var values = [];
+                        var total = propertyName.length;
+                        for (var index = 0; index < total; ++index) {
+                            var value = cgiResult[propertyName[index]].toString();
+                            if (value) {
+                                values.push(value);
+                            }
+                        }
+                        done(null, JSON.stringify(values));
+                        return;
+                    }
+
+                    done(null, 'Invalid property');
                 });
 
             });

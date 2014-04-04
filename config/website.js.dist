@@ -16,14 +16,6 @@ module.exports = {
     limit: 10,
 
     // The archives directory
-    archivePath: '/home/archives',
+    archivePath: '/home/archives'
 
-    // Presets
-    presets: [
-        'Cuisine',
-        'Escalier',
-        'Tele', 
-        'Veranda',
-        'Salon'
-    ]
 };
