@@ -143,7 +143,7 @@ proto.archiveFile = function(filePath, callback)
         // Create the directory if necessary
         function(stats, next) {
             var year = stats.mtime.getFullYear();
-            var month = stats.mtime.getMonth();
+            var month = stats.mtime.getMonth() + 1;
             var day = stats.mtime.getDate();
 
             if (month < 10) {
